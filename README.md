@@ -1,7 +1,7 @@
 # TulingChat
 Android App
 
-Chat with <a href="http://tuling123.com">Turing Robot</a> API </br>
+Chat with <a href="http://www.tuling123.com/html/doc/api.html">Turing Robot</a> API </br>
 Support Chinese(中文) ONLY
 
 Main function: </br>
