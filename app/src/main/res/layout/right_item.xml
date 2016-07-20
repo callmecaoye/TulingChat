@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#f0f0f0"
+    android:paddingRight="8dip"
+    android:paddingLeft="8dip"
+    android:paddingBottom="10dip"
+    android:paddingTop="10dip">
+
+    <TextView android:id="@+id/timeView"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal"/>
+
+    <ImageView
+        android:id="@+id/myImage"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/timeView"
+        android:background="@drawable/peng"/>
+
+    <com.daasuu.bl.BubbleLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/myImage"
+        android:layout_toLeftOf="@id/myImage"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="5dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@id/timeView"
+        app:bl_bubbleColor="#34a853"
+        app:bl_arrowDirection="right"
+        app:bl_arrowHeight="8dp"
+        app:bl_arrowPosition="8dp"
+        app:bl_arrowWidth="10dp"
+        app:bl_cornersRadius="6dp" >
+
+        <TextView android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="中文"
+            android:textSize="20sp"
+            android:textColor="@android:color/black" />
+
+    </com.daasuu.bl.BubbleLayout>
+</RelativeLayout>

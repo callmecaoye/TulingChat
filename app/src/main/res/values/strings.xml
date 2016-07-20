@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TulingChat</string>
+    <string name="send">发送</string>>
+    <string name="welcome">你好，我是习大大</string>
+</resources>
