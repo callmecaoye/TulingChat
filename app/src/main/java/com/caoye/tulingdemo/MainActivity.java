@@ -15,8 +15,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, HttpGetDataListener{
-    private HttpData httpData;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, HttpURLConnListener {
+    private HttpURLConnRequest httpURLConnRequest;
     private List<ListData> list = new ArrayList<>();
     private ListData listData;
     private ListView listView;
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list.add(listData);
         adapter.notifyDataSetChanged();
         String content = content_Str.replace(" ", "").replace("\n", "");
-        httpData = (HttpData) new HttpData(AppConstant.API_URL, content, this).execute();
+        httpURLConnRequest = (HttpURLConnRequest) new HttpURLConnRequest(AppConstant.API_URL, content, this).execute();
     }
 
     private void checkListSize() {
