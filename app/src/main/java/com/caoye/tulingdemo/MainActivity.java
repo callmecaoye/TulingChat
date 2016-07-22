@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, HttpURLConnListener {
+public class MainActivity extends AppCompatActivity implements HttpURLConnListener {
     private HttpURLConnRequest httpURLConnRequest;
     private List<ListData> list = new ArrayList<>();
     private ListData listData;
@@ -36,7 +36,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listView = (ListView) findViewById(R.id.listView);
         sendText = (EditText) findViewById(R.id.sendText);
         sendButton = (Button) findViewById(R.id.sendButton);
-        sendButton.setOnClickListener(this);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkListSize();
+
+                content_Str = sendText.getText().toString();
+                sendText.setText(null);
+                listData = new ListData(content_Str, ListData.SEND, getTime());
+                list.add(listData);
+                adapter.notifyDataSetChanged();
+                String content = content_Str.replace(" ", "").replace("\n", "");
+                httpURLConnRequest = (HttpURLConnRequest) new HttpURLConnRequest(AppConstant.API_URL, content, MainActivity.this).execute();
+            }
+        });
         adapter = new TextAdapter(list, this);
         listView.setAdapter(adapter);
         showWelcomeTips();
@@ -62,19 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onClick(View view) {
-        checkListSize();
-
-        content_Str = sendText.getText().toString();
-        sendText.setText(null);
-        listData = new ListData(content_Str, ListData.SEND, getTime());
-        list.add(listData);
-        adapter.notifyDataSetChanged();
-        String content = content_Str.replace(" ", "").replace("\n", "");
-        httpURLConnRequest = (HttpURLConnRequest) new HttpURLConnRequest(AppConstant.API_URL, content, this).execute();
     }
 
     private void checkListSize() {
