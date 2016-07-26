@@ -16,13 +16,22 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity { //implements HttpURLConnListener {
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Field;
+
+public class MainActivity extends AppCompatActivity {
+    //implements HttpURLConnListener {
     //private HttpURLConnRequest httpURLConnRequest;
     private List<ListData> list = new ArrayList<>();
     private ListData listData;
@@ -56,10 +65,17 @@ public class MainActivity extends AppCompatActivity { //implements HttpURLConnLi
                 String content = content_Str.replace(" ", "").replace("\n", "");
 
                 /**
-                *HttpURLConnection Request
+                 * Retrfit request
+                 */
+                retrofitRequest(AppConstant.API_KEY, content);
+
+                /**
+                * HttpURLConnection request
                 httpURLConnRequest = (HttpURLConnRequest) new HttpURLConnRequest(AppConstant.API_URL, content, MainActivity.this).execute();
                 */
 
+                /**
+                 * Volley request
                 HashMap<String, String> params = getVolleyReqData(content);
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
                 JsonObjectRequest jsonReq = new JsonObjectRequest(AppConstant.API_URL, new JSONObject(params),
@@ -80,6 +96,7 @@ public class MainActivity extends AppCompatActivity { //implements HttpURLConnLi
                             }
                         });
                 requestQueue.add(jsonReq);
+                 */
             }
         });
         adapter = new TextAdapter(list, this);
@@ -87,23 +104,46 @@ public class MainActivity extends AppCompatActivity { //implements HttpURLConnLi
         showWelcomeTips();
     }
 
-    private void showWelcomeTips() {
-        String welcome = this.getResources().getString(R.string.welcome);
-        listData = new ListData(welcome, ListData.RECEIVE, getTime());
-        list.add(listData);
+    public void retrofitRequest(String key, String content) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://www.tuling123.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        TulingApi turing = retrofit.create(TulingApi.class);
+        Call<ResponseBody> call = turing.getRetrofitResponse(key, content);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                String data = null;
+                try {
+                    data = response.body().string();
+                    parseText(data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
     /**
      * Get Volley request parameters
      * @param content
      * @return
-     */
+
     private HashMap<String, String> getVolleyReqData(String content) {
         HashMap<String, String> map = new HashMap<>();
         map.put("key", AppConstant.API_KEY);
         map.put("info", content);
         return map;
     }
+     */
+
 
     /**
      * HttpURLConnRequest callback method
@@ -134,6 +174,11 @@ public class MainActivity extends AppCompatActivity { //implements HttpURLConnLi
         adapter.notifyDataSetChanged();
     }
 
+    private void showWelcomeTips() {
+        String welcome = this.getResources().getString(R.string.welcome);
+        listData = new ListData(welcome, ListData.RECEIVE, getTime());
+        list.add(listData);
+    }
 
     private void checkListSize() {
         if (list.size() >= 30) {
