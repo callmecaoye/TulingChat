@@ -12,6 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
+ * This class is for HttpURLConnection Request
  * Created by admin on 7/18/16.
  */
 public class HttpURLConnRequest extends AsyncTask<String, String, String> {
