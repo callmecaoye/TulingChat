@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 String content = content_Str.replace(" ", "").replace("\n", "");
 
                 /**
-                 * Retrfit request
+                 * Retrofit request
                  */
                 retrofitRequest(AppConstant.API_KEY, content);
 
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
     public void retrofitRequest(String key, String content) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://www.tuling123.com/")
-                .addConverterFactory(GsonConverterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create())
                 .build();
         TulingApi turing = retrofit.create(TulingApi.class);
         Call<ResponseBody> call = turing.getRetrofitResponse(key, content);
