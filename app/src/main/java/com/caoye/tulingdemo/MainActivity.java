@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -59,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
                 content_Str = sendText.getText().toString();
                 sendText.setText(null);
+                if (content_Str == null || content_Str.length() == 0) {
+                    Toast.makeText(getApplicationContext(), R.string.null_message, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 listData = new ListData(content_Str, ListData.SEND, getTime());
                 list.add(listData);
                 adapter.notifyDataSetChanged();
