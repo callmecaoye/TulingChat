@@ -22,7 +22,7 @@ public class TextAdapter extends BaseAdapter{
 
     public TextAdapter(List<ListData> list, Context mContext) {
         this.list = list;
-        inflater.from(mContext);
+        this.inflater = LayoutInflater.from(mContext);
     }
 
     @Override
@@ -41,59 +41,49 @@ public class TextAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        int type = list.get(i).getFlag();
-        ReceiveViewHolder rViewHolder = null;
-        SendViewHolder sViewHolder = null;
+    public int getViewTypeCount() {
+        return 2;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return list.get(position).getFlag();
+    }
+
+    @Override
+    public View getView(int i, View convertView, ViewGroup parent) {
+        int type = getItemViewType(i);
+        ViewHolder viewHolder = null;
 
         if (convertView == null) {
             switch (type) {
                 case ListData.RECEIVE:
+                    viewHolder = new ViewHolder();
                     convertView = inflater.inflate(R.layout.left_item, null);
-                    rViewHolder = new ReceiveViewHolder();
-                    rViewHolder.textView = (TextView) convertView.findViewById(R.id.textView);
-                    rViewHolder.timeView = (TextView) convertView.findViewById(R.id.timeView);
-                    convertView.setTag(0, rViewHolder);
+                    viewHolder.textView = (TextView) convertView.findViewById(R.id.textView);
+                    viewHolder.timeView = (TextView) convertView.findViewById(R.id.timeView);
                     break;
+
                 case ListData.SEND:
-                    convertView = inflater.inflate(R.layout.right_item, null);
-                    sViewHolder = new SendViewHolder();
-                    sViewHolder.textView = (TextView) convertView.findViewById(R.id.textView);
-                    sViewHolder.timeView = (TextView) convertView.findViewById(R.id.timeView);
-                    convertView.setTag(1, sViewHolder);
-                    break;
+                viewHolder = new ViewHolder();
+                convertView = inflater.inflate(R.layout.right_item, null);
+                viewHolder.textView = (TextView) convertView.findViewById(R.id.textView);
+                viewHolder.timeView = (TextView) convertView.findViewById(R.id.timeView);
+                break;
+
             }
+            convertView.setTag(viewHolder);
         } else {
-            switch (type) {
-                case ListData.RECEIVE:
-                    rViewHolder = (ReceiveViewHolder) convertView.getTag(0);
-                    break;
-                case ListData.SEND:
-                    sViewHolder = (SendViewHolder) convertView.getTag(1);
-                    break;
-            }
+            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        switch (type) {
-            case ListData.RECEIVE:
-                rViewHolder.textView.setText(list.get(i).getContent());
-                rViewHolder.timeView.setText(list.get(i).getTime());
-                break;
-            case ListData.SEND:
-                sViewHolder.textView.setText(list.get(i).getContent());
-                sViewHolder.timeView.setText(list.get(i).getTime());
-                break;
-        }
+        viewHolder.textView.setText(list.get(i).getContent());
+        viewHolder.timeView.setText(list.get(i).getTime());
 
         return convertView;
     }
 
-    static class ReceiveViewHolder {
-        TextView textView;
-        TextView timeView;
-    }
-
-    static class SendViewHolder {
+    static class ViewHolder {
         TextView textView;
         TextView timeView;
     }
