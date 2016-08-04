@@ -4,8 +4,8 @@ package com.caoye.tulingdemo;
  * Created by admin on 7/18/16.
  */
 public class ListData {
-    public static final int SEND = 1;
-    public static final int RECEIVE = 2;
+    public static final int SEND = 0;
+    public static final int RECEIVE = 1;
     public int flag;
     private String content;
     private String time;
